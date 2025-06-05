@@ -51,7 +51,7 @@ class GyroController(context: Context) : SensorEventListener {
                     val y = it.values[1]
                     xOffset = when {
                         abs(x) > shakeThreshold -> (xOffset + x * 5f).coerceIn(-1f, 1f)
-                        abs(xOffset) > 0.01f -> xOffset * 0.8f // Stronger dampening
+                        abs(xOffset) > 0.01f -> xOffset * 0.8f
                         else -> 0f
                     }
                     yOffset = when {
