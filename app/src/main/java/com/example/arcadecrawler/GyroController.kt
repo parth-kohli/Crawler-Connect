@@ -46,28 +46,23 @@ class GyroController(context: Context) : SensorEventListener {
                 }
 
                 val timeDiff = currentTime - lastUpdateTime
-                if (timeDiff > 50) { // More frequent updates
+                if (timeDiff > 50) {
                     val x = it.values[0]
                     val y = it.values[1]
-
-                    // Apply smoothing and threshold
                     xOffset = when {
                         abs(x) > shakeThreshold -> (xOffset + x * 5f).coerceIn(-1f, 1f)
                         abs(xOffset) > 0.01f -> xOffset * 0.8f // Stronger dampening
                         else -> 0f
                     }
-
                     yOffset = when {
                         abs(y) > shakeThreshold -> (yOffset + y * 5f).coerceIn(-1f, 1f)
                         abs(yOffset) > 0.01f -> yOffset * 0.8f
                         else -> 0f
                     }
-
                     lastUpdateTime = currentTime
                 }
             }
         }
     }
-
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 }

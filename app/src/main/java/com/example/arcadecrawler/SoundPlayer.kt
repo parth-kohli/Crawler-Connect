@@ -5,7 +5,6 @@ object Soundplayer {
     private var mediaPlayer: MediaPlayer? = null
 
     fun shoot(context: Context) {
-
         mediaPlayer = MediaPlayer.create(context, R.raw.shoot)
         mediaPlayer?.start()
     }
