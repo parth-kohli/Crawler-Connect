@@ -214,8 +214,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 if (!gunCooldown) {
                     scope.launch {
                         gunCooldown = true
-
-                        // Vertical movement
                         if (gyroY > 0.2) {
                             if (gun_height == 27) gun_height = 29
                             else if (gun_height == 29) gun_height = 31
@@ -225,8 +223,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                             else if (gun_height == 29) gun_height = 27
                             rot2=-30f
                         }
-
-                        // Horizontal movement
                         if (gyroX > 0.2) {
                             if (gun_width < 10) gun_width += 1
                             rot=30f
@@ -248,7 +244,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         for (i in startanim) {if (i.value==false)  counter=true; break}
         if (caterpillars.isEmpty() && counter) {
             win.value = 1
-           // Soundplayer.win(context)
             pause.value = true
         }
     }
@@ -271,7 +266,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         containerColor = Color.White
         ) { paddingValues ->
         Box(modifier = Modifier.fillMaxSize().onGloballyPositioned { coordinates ->
-            colHeightPx.value = coordinates.size.height; colWidthPx.value = coordinates.size.width;  // height in pixels
+            colHeightPx.value = coordinates.size.height; colWidthPx.value = coordinates.size.width;
         }) {
 
             val density = LocalDensity.current
@@ -380,7 +375,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                             x = tileHeight * gun_height, y = -1 * tileWidth * gun_width
                         )
                 )
-                // Replace your current bullet rendering with:
                 bullets.forEach { bullet ->
                     generatebullet(bullets, bullet, tileWidth, tileHeight, bulletx)
                 }
@@ -473,7 +467,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                                 if (gun_width > 2) gun_width -= 1
 
                                             }
-                                            delay(100) // actual cooldown
+                                            delay(100)
                                             gunCooldown = false
                                         }
                                     }
@@ -604,7 +598,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                     .background(Color.White)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Refresh, // Add a restart icon
+                                    imageVector = Icons.Default.Refresh,
                                     contentDescription = "Restart",
                                     tint = Color.Black
                                 )
@@ -629,11 +623,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 @Composable
 fun choosescreen(caterpillars: SnapshotStateList<Caterpillars>,caterpillarCount: MutableState<Int>, screen_no: MutableState<Int>, tileWidth: Dp,tileHeight: Dp){
-        val maxCaterpillars = 4 // Maximum number allowed
+        val maxCaterpillars = 4
         Box(
             modifier = Modifier.fillMaxSize().background(Color(0xFF121212)))
             {
-                // Reuse your animated background
                 AnimatedBackground(tileWidth, tileHeight)
 
                 Column(
@@ -651,8 +644,6 @@ fun choosescreen(caterpillars: SnapshotStateList<Caterpillars>,caterpillarCount:
                     )
 
                     Spacer(modifier = Modifier.height(40.dp))
-
-                    // Caterpillar count display
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
@@ -690,8 +681,6 @@ fun choosescreen(caterpillars: SnapshotStateList<Caterpillars>,caterpillarCount:
                             )
                         }
                     }
-
-                    // Visual caterpillar preview
                     Row(
                         modifier = Modifier.padding(vertical = 20.dp),
                         horizontalArrangement = Arrangement.Center
@@ -710,7 +699,6 @@ fun choosescreen(caterpillars: SnapshotStateList<Caterpillars>,caterpillarCount:
 
                     Spacer(modifier = Modifier.height(40.dp))
 
-                    // Start Button
                     Button(
                         onClick = { makecaterpillarlist(caterpillars, caterpillarCount.value); screen_no.value=2 },
                         modifier = Modifier
@@ -812,8 +800,6 @@ fun generatebullet(bullets: SnapshotStateList<Bullet>, bullet: Bullet, tileWidth
             }
             delay(30)
         }
-
-        //bullets.removeIf { it.id == bullet.id }
     }
 
     Image(
@@ -861,9 +847,8 @@ fun generatecrab(tileWidth: Dp,tileHeight: Dp, crabmove: MutableState<Boolean>, 
                 val waitTime = Random.nextInt(3000, 10000)
                     if(!pause.value) {
                         y = Random.nextInt(9, 28)
-                        val stepCount = Random.nextInt(13, 17) // how far to go horizontally
-
-                        val speed = 100L //Random.nextLong(100L, 300L)
+                        val stepCount = Random.nextInt(13, 17)
+                        val speed = 100L
                         for (i in 0 until stepCount) {
                             if (!pause.value) {
                                 x += 1
@@ -923,9 +908,8 @@ fun generatescorpion(tileWidth: Dp,tileHeight: Dp, scorpionmove: MutableState<Bo
                 }
                 if(!pause.value) {
                     y = listy.random()
-                    val stepCount = 17 // how far to go horizontally
-
-                    val speed = 100L //Random.nextLong(100L, 300L)
+                    val stepCount = 17
+                    val speed = 100L
                     for (i in 0 until stepCount) {
                         if (!pause.value) {
                             x += 1
@@ -1005,15 +989,12 @@ fun joystick(pause: MutableState<Boolean>,
             if (center == Offset.Zero) center = Offset(radius, radius)
             if (handlePosition == Offset.Zero) handlePosition = center
 
-            // Outer circle
             drawCircle(
                 color = Color(0,0,0,100),
                 radius = radius,
                 center = center,
                 style = Fill
             )
-
-            // Inner handle circle
             drawCircle(
                 color = Color(0,0,0,200),
                 radius = radius / 3,
@@ -1075,8 +1056,6 @@ fun caterpillarstart(
                         reload.value = !reload.value
                         delay(200)
                     }
-
-                    // Diagonal movement
                     var counter = 0
                     repeat(9) {
                         for (i in counter + 1 until caterpillar.size) {
@@ -1093,13 +1072,9 @@ fun caterpillarstart(
                         reload.value = !reload.value
                         delay(200)
                     }
-
-                    // Mark animation as complete
                     startanim[index].value = false
                 }
             }
-
-            // Render the caterpillar during start animation
             val tileWidth = width / 16
             val tileHeight = height / (16 * height / width)
 
@@ -1202,13 +1177,11 @@ fun generatecaterpillar(startanim: SnapshotStateList<MutableState<Boolean>>, cat
                                                     )
                                                 )
 
-                                                // Add the new caterpillar to startanim if needed
                                                 if (startanim.size > caterpillarIndex) {
                                                     startanim.add(mutableStateOf(false))
                                                 }
                                             }
 
-                                            // Trim original caterpillar
                                             caterpillars[caterpillarIndex] =
                                                 currentCaterpillar.copy(
                                                     size = hitSegmentIndex,
@@ -1256,7 +1229,7 @@ fun generatecaterpillar(startanim: SnapshotStateList<MutableState<Boolean>>, cat
 
                 if (isPoisoned.value) {
                     if (head.y < targetRow.value) {
-                        // Move down
+
                         updatedCaterpillar.position[0] = head.copy(
                             y = head.y + 1
                         )
@@ -1342,7 +1315,7 @@ fun generatecaterpillar(startanim: SnapshotStateList<MutableState<Boolean>>, cat
                     "DOWN" -> -90f
                     "UP" -> 90f
                     "RIGHT" -> 180f
-                    else -> 0f // RIGHT or default
+                    else -> 0f
                 }
             } else 0f
 
@@ -1389,7 +1362,7 @@ fun HomeScreen(caterpillars: SnapshotStateList<Caterpillars>,
     Box(
         modifier = Modifier.fillMaxSize().background(Color(0xFF121212)))
             {
-                // Animated background
+
                 AnimatedBackground(tileWidth, tileHeight)
 
                 Column(
@@ -1410,7 +1383,6 @@ fun HomeScreen(caterpillars: SnapshotStateList<Caterpillars>,
 
                     Spacer(modifier = Modifier.height(40.dp))
 
-                    // Start Button
                     Button(
                         onClick = {screen_no.value=1 },
                         modifier = Modifier
@@ -1433,11 +1405,8 @@ fun HomeScreen(caterpillars: SnapshotStateList<Caterpillars>,
 
 @Composable
 fun AnimatedBackground(tileWidth: Dp, tileHeight: Dp) {
-    // Convert Dp to Px once at the start
     val tileWidthPx = with(LocalDensity.current) { tileWidth.toPx() }
     val tileHeightPx = with(LocalDensity.current) { tileHeight.toPx() }
-
-    // Only proceed if we have valid dimensions
     if (tileWidthPx.toInt() <= 0 || tileHeightPx.toInt() <= 0) return
 
     val infiniteTransition = rememberInfiniteTransition()
@@ -1451,9 +1420,7 @@ fun AnimatedBackground(tileWidth: Dp, tileHeight: Dp) {
     )
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // Grid pattern background
         Canvas(modifier = Modifier.fillMaxSize()) {
-            // Use the pre-calculated pixel values
             for (x in 0..size.width.toInt() step tileWidthPx.toInt()) {
                 drawLine(
                     color = Color(0x1AFFFFFF),
@@ -1472,7 +1439,6 @@ fun AnimatedBackground(tileWidth: Dp, tileHeight: Dp) {
             }
         }
 
-        // Moving enemies in background
         Image(
             painter = painterResource(R.drawable.crab),
             contentDescription = null,
@@ -1544,7 +1510,6 @@ fun generatemushrooms(
     bullets: SnapshotStateList<Bullet>,
     crabmove: MutableState<Boolean>
 ) {
-    // ✅ Use shared reactive mushroom_positions
     LaunchedEffect(bullets.size) {
         while (true) {
             delay(50)
@@ -1558,8 +1523,6 @@ fun generatemushrooms(
                                 if (bulletIndex < bullets.size && bullets[bulletIndex] == bullet && bullet.id == bullets[bulletIndex].id) {
                                     bullets.removeAt(bulletIndex)
                                 }
-
-                                // ✅ Modify directly on shared list
                                 mushroom_positions[mushroomIndex] =
                                     mushroom.copy(lives = mushroom.lives - 1)
 
@@ -1578,8 +1541,6 @@ fun generatemushrooms(
             }
         }
     }
-
-    // ✅ Display using shared state
     mushroom_positions.forEachIndexed { _, mushroom ->
         val tint = when (mushroom.lives) {
             5 -> 1f
