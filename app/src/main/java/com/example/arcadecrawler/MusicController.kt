@@ -11,7 +11,6 @@ object MusicController {
     fun start(context: Context, music: File, volume: Float) {
         if (mediaPlayer == null) {
             println(music.absolutePath)
-            //mediaPlayer=MediaPlayer.create(context,R.raw.music1)
             mediaPlayer = MediaPlayer().apply { setDataSource(music.absolutePath) }
             mediaPlayer?.isLooping = true
         }
@@ -19,7 +18,6 @@ object MusicController {
         mediaPlayer?.start()
         mediaPlayer?.setVolume(volume, volume)
     }
-
     fun pause() {
         mediaPlayer?.pause()
     }

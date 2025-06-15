@@ -45,7 +45,7 @@ data class PowerUp(
     val id: Int,
     val name: String,
     val description: String,
-    val duration: Long // in milliseconds
+    val duration: Long
 )
 data class CentipedeDestroyedPayload(val centipedeDestroyed: Boolean = true)
 
@@ -75,16 +75,14 @@ interface CrawlerApi {
 }
 
 object ApiClient {
-    private const val BASE_URL = "https://crawler-connect.vercel.app/" // Replace with actual base URL
+    private const val BASE_URL = "https://crawler-connect.vercel.app/"
 
     val api: CrawlerApi by lazy {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-
         val client = OkHttpClient.Builder()
             .build()
-
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)

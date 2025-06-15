@@ -292,7 +292,6 @@ fun ScoreSubmissionDialog(
         confirmButton = {
             if (!done) {
                 Button(
-
                     onClick = {
                         isLoading = true
 
@@ -395,10 +394,6 @@ fun fetchPowerUps(onResult: (List<PowerUp>?) -> Unit) {
 @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    //val scoreOutput = LocalContext.current.openFileOutput("users.txt", Context.MODE_PRIVATE)
-    //val powerupout = LocalContext.current.openFileOutput("powerups.txt", Context.MODE_PRIVATE)
-    //val scoreOutput = LocalContext.current.openFileOutput("settings.txt", Context.MODE_PRIVATE)
-    //scoreOutput.write("100\n100\ntrue\ntrue\n".toByteArray())
     val shield = remember { mutableStateOf(false) }
     var rapidfire = remember { mutableStateOf(false) }
     var fastforward = remember { mutableStateOf(false) }
@@ -443,7 +438,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         onDispose {
             gyroController.stop()
             MusicController.stop()
-            // Clear all game state to prevent memory leaks
             startanim.clear()
             caterpillars.clear()
             bullets.clear()
@@ -642,9 +636,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         containerColor = Color.White
         ) { paddingValues ->
         if (screen_no.value==2)Image(
-            bitmap = backimg.asImageBitmap(), // convert Bitmap to ImageBitmap
+            bitmap = backimg.asImageBitmap(),
             contentDescription = null,
-            modifier = Modifier.fillMaxSize() // change as needed
+            modifier = Modifier.fillMaxSize()
         )
         Box(modifier = Modifier.fillMaxSize().onGloballyPositioned { coordinates ->
             colHeightPx.value = coordinates.size.height; colWidthPx.value = coordinates.size.width;
@@ -743,22 +737,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                         win, fastforward
                     )
                 }
-                /*caterpillarstart(
-                    startanim,
-                    caterpillars,
-                    bullets,
-                    colHeightPx,
-                    colWidthPx,
-                    height,
-                    width,
-                    0,
-                    pause,
-                    gun_width,
-                    gun_height,
-                    win
-                )*/
-
-
                 SvgImage(url=skinUrls.value[1][0], modifier=Modifier.height(tileWidth * 2.5f).graphicsLayer { rotationZ = 180f }
                     .offset(
                         y = -1 *tileHeight * gun_height, x = -1 * tileWidth * gun_width
@@ -1194,7 +1172,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 if (win.value==9){
                     pause.value=true
                     val videoFile = remember {
-                        copyRawToFile(context, R.raw.shield, "my_video.mp4")
+                        convert(context, R.raw.shield, "my_video.mp4")
                     }
                     VideoPlayer(
                         videoUri = Uri.fromFile(videoFile).toString()
@@ -1206,7 +1184,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 else if (win.value==10){
                     pause.value=true
                     val videoFile = remember {
-                        copyRawToFile(context, R.raw.rapidfire, "my_video.mp4")
+                        convert(context, R.raw.rapidfire, "my_video.mp4")
                     }
                     VideoPlayer(
                         videoUri = Uri.fromFile(videoFile).toString()
@@ -1217,7 +1195,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 else if (win.value==11){
                     pause.value=true
                     val videoFile = remember {
-                        copyRawToFile(context, R.raw.ff, "my_video.mp4")
+                        convert(context, R.raw.ff, "my_video.mp4")
                     }
                     VideoPlayer(
                         videoUri = Uri.fromFile(videoFile).toString()
@@ -1228,7 +1206,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 else if (win.value==12){
                     pause.value=true
                     val videoFile = remember {
-                        copyRawToFile(context, R.raw.mushbomb, "my_video.mp4")
+                        convert(context, R.raw.mushbomb, "my_video.mp4")
                     }
                     VideoPlayer(
                         videoUri = Uri.fromFile(videoFile).toString()
@@ -1239,7 +1217,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 else if (win.value==13){
                     pause.value=true
                     val videoFile = remember {
-                        copyRawToFile(context, R.raw.multi, "my_video.mp4")
+                        convert(context, R.raw.multi, "my_video.mp4")
                     }
                     VideoPlayer(
                         videoUri = Uri.fromFile(videoFile).toString()
@@ -1250,7 +1228,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 else if (win.value==14){
                     pause.value=true
                     val videoFile = remember {
-                        copyRawToFile(context, R.raw.poisonremover, "my_video.mp4")
+                        convert(context, R.raw.poisonremover, "my_video.mp4")
                     }
                     VideoPlayer(
                         videoUri = Uri.fromFile(videoFile).toString()
@@ -1363,7 +1341,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                     fontSize = 15.sp
                 )
                 Spacer(modifier = Modifier.height(25.85f.dp ))
-                SnakeInfinityAnimation(
+                snake_Loader(
                     modifier = Modifier.fillMaxSize(),
                     segmentCount = 16,
                     pathSize = 100.dp,
@@ -1371,18 +1349,13 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                 )
 
             }
-/*
-            SnakeLoadingAnimation(
-                modifier = Modifier.fillMaxSize(),
-                maxSegments = 16,
-                radius = 80.dp
-            )*/
-            //CircularProgressIndicator(modifier = Modifier.size(40.dp), strokeWidth = 2.dp, trackColor = Color.Red, color = Color.Green)
+
+
         }
     }
 }
 @Composable
-fun SnakeInfinityAnimation(
+fun snake_Loader(
     modifier: Modifier = Modifier,
     segmentCount: Int = 8,
     pathSize: Dp = 100.dp,
@@ -1391,10 +1364,7 @@ fun SnakeInfinityAnimation(
     val headPainter = painterResource(id = R.drawable.snake_head)
     val bodyPainter = painterResource(id = R.drawable.snake_body)
     val density = LocalDensity.current
-
     val transition = rememberInfiniteTransition()
-
-    // Animate t: 0 → 1
     val t by transition.animateFloat(
         initialValue = 0f,
         targetValue = 1f,
@@ -1415,8 +1385,6 @@ fun SnakeInfinityAnimation(
         contentAlignment = Alignment.Center
     ) {
         val center = with(density) { pathSize.toPx() }
-
-        // ∞ path point using Lemniscate of Gerono
         fun infinityPathPoint(progress: Float): Offset {
             val twoPi = 2 * Math.PI
             val theta = progress * twoPi
@@ -1425,18 +1393,12 @@ fun SnakeInfinityAnimation(
             val y = a * sin(2 * theta).toFloat() / 2
             return Offset(center + x, center + y)
         }
-
-        // Body segments with trailing fade
         val hue = (hueShift + 2 * (360f / segmentCount)) % 360f
         val color = Color.hsv(hue, 0.9f, 1f)
         for (i in segmentCount downTo 1) {
             val segmentProgress = (t - i * 0.03f + 1f) % 1f
             val pos = infinityPathPoint(segmentProgress)
-
-            // Fade: head = 1f, tail = ~0.2f
             val alpha = 1f - (i / segmentCount.toFloat()) * 0.8f
-
-
             Icon(
                 painter = bodyPainter,
                 contentDescription = "Snake Body $i",
@@ -1477,86 +1439,7 @@ fun SnakeInfinityAnimation(
         )
     }
 }
-
-
-@Composable
-fun SnakeLoadingAnimation(
-    modifier: Modifier = Modifier,
-    maxSegments: Int = 6,
-    radius: Dp = 60.dp,
-    speed: Float = 1.5f
-) {
-    val headPainter = painterResource(id = R.drawable.snake_head)
-    val bodyPainter = painterResource(id = R.drawable.snake_body)
-    val density = LocalDensity.current
-    val infiniteTransition = rememberInfiniteTransition()
-
-    // Angle for circular movement
-    val angle by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = (3000 / speed).toInt(), easing = LinearEasing)
-        )
-    )
-
-    val segmentCount by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = maxSegments.toFloat(),
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 2000, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
-
-    Box(
-        modifier = modifier.size(radius * 2),
-        contentAlignment = Alignment.Center
-    ) {
-        val centerPx = with(density) { radius.toPx() }
-
-        // Convert polar to cartesian
-        fun offsetAt(index: Int): Offset {
-            val delay = index * 15f
-            val angleOffset = (angle - delay) % 360
-            val rad = Math.toRadians(angleOffset.toDouble())
-            val x = (centerPx + cos(rad) * centerPx).toFloat()
-            val y = (centerPx + sin(rad) * centerPx).toFloat()
-            return Offset(x, y)
-        }
-
-        // Draw dynamically changing number of body segments
-        for (i in segmentCount.toInt() downTo 1) {
-            val pos = offsetAt(i)
-            Image(
-                painter = bodyPainter,
-                contentDescription = "Snake Body",
-                modifier = Modifier
-                    .size(24.dp)
-                    .graphicsLayer {
-                        translationX = pos.x - centerPx
-                        translationY = pos.y - centerPx
-                    }
-            )
-        }
-
-        // Draw head
-        val headPos = offsetAt(0)
-        Image(
-            painter = headPainter,
-            contentDescription = "Snake Head",
-            modifier = Modifier
-                .size(24.dp)
-                .graphicsLayer {
-                    translationX = headPos.x - centerPx
-                    translationY = headPos.y - centerPx
-                }
-        )
-    }
-}
-
-
-fun copyRawToFile(context: Context, rawResId: Int, fileName: String): File {
+fun convert(context: Context, rawResId: Int, fileName: String): File {
     val inputStream = context.resources.openRawResource(rawResId)
     val tempFile = File(context.cacheDir, fileName)
 
@@ -1579,8 +1462,6 @@ fun VideoPlayer(
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-
-    // Rebuild ExoPlayer on videoUri change
     val exoPlayer = remember(videoUri) {
         ExoPlayer.Builder(context).build().apply {
             val mediaItem = MediaItem.fromUri(Uri.parse(videoUri))
@@ -1589,8 +1470,6 @@ fun VideoPlayer(
             playWhenReady = true
         }
     }
-
-    // Handle playback state
     DisposableEffect(exoPlayer) {
         val listener = object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
@@ -1608,8 +1487,6 @@ fun VideoPlayer(
             exoPlayer.release()
         }
     }
-
-    // Recreate the PlayerView each time to prevent black screen
     AndroidView(
         factory = {
             PlayerView(it).apply {
@@ -2150,7 +2027,6 @@ fun generatescorpion(screen_no: MutableState<Int>, tileWidth: Dp, tileHeight: Dp
     }
 
     SvgImage(url=skinUrls[0], modifier = Modifier.size(tileWidth*2,tileHeight*2).offset(x*tileWidth, y*tileHeight), alpha = 1f)
-    //Image(painterResource( R.drawable.scorpion), contentDescription = "SCORPION", modifier = Modifier.size(tileWidth*2,tileHeight*2).offset(x*tileWidth, y*tileHeight))
 }
 @Composable
 fun joystick(pause: MutableState<Boolean>,
@@ -2606,8 +2482,6 @@ fun GameInstructions(skinUrls: List<List<String>>) {
                 text = "Press pause button to access settings and power-ups"
             )
         }
-
-        // Enemies Section
         InstructionSection("Enemies") {
             InstructionItem(
                 icon = painterResource(R.drawable.snake_head),
@@ -2622,8 +2496,6 @@ fun GameInstructions(skinUrls: List<List<String>>) {
                 text = "Crabs: Move in zig-zag patterns and destroy mushrooms they touch"
             )
         }
-
-        // Mushrooms Section
         InstructionSection("Mushrooms") {
             InstructionItem(
                 icon = skinUrls[0][0],
@@ -3050,13 +2922,6 @@ fun generatemushrooms(screen_no: MutableState<Int>,
                 url = if (mushroom.poison)skinUrls[1] else skinUrls[0],
                 modifier = Modifier.fillMaxSize(), alpha=tint
             )
-            /*Image(
-                painter = painterResource(id = if (mushroom.poison)R.drawable.poisonmushroom else R.drawable.mushroom),
-                contentDescription = "Mushroom",
-                modifier = Modifier.fillMaxSize(),
-                alpha = tint
-            )*/
-
             if (mushroom.lives < 5) {
                 Text(
                     text = mushroom.lives.toString(),
@@ -3096,20 +2961,6 @@ fun mushroompositions() {
         }
         println(newpositions)
     }
-    /*for (i in 1..number) {
-        val x = Random.nextInt(2, 14)
-        val yMin = 5 + i
-        val yMax = (8 + 3 * i).coerceAtMost(27)
-        val y = Random.nextInt(yMin, yMax + 1)
-        val pos = x to y
-        val isTooClose = usedPositions.any { (ux, uy) ->
-            kotlin.math.abs(ux - x) <= 2 && kotlin.math.abs(uy - y) <= 2
-        }
-        if (!isTooClose) {
-            usedPositions.add(pos)
-            mushroom_positions.addLast(mushroom_position(x, (y/2).toInt()*2, 5,false))
-        }
-    }*/
 }
 
 
