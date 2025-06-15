@@ -4,7 +4,6 @@ import android.content.Context
 import android.media.MediaPlayer
 import java.io.File
 import java.io.FileOutputStream
-
 object MusicController {
     private var mediaPlayer: MediaPlayer? = null
 

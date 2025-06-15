@@ -1131,9 +1131,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                 }
                             }
                             Spacer(Modifier.height(tileHeight))
-                            Column(modifier = Modifier.fillMaxWidth()) {
-                                Text("Powerups Enabled: ", fontWeight = FontWeight.Bold)
-                            }
+
+                            Text("Powerups Animations: ", fontWeight = FontWeight.Bold)
+
                             Spacer(Modifier.height(tileHeight))
                             IconButton(onClick = {
                                 animenabled = !animenabled; editsettings(context = context, 3, volume)
@@ -1145,7 +1145,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                         Icon(
                                             painter = painterResource(R.drawable.circle),
                                             contentDescription = "Check",
-                                            tint = Color.LightGray
+                                            modifier=Modifier.width(tileWidth*2),
+                                            tint = Color(20,102,0)
                                         )
                                     }
                                 }
@@ -1154,7 +1155,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                         Icon(
                                             painter = painterResource(R.drawable.circle),
                                             contentDescription = "Check",
-                                            tint = Color.LightGray
+                                            modifier=Modifier.width(tileWidth*2),
+                                            tint = Color(102,0,2)
+
                                         )
                                         Spacer(modifier=Modifier.fillMaxHeight().width(tileWidth))
                                         Text("Off", color = Color.Black)
@@ -1801,7 +1804,7 @@ fun readsettings(context: Context): List<String> {
         fileInput.bufferedReader().readLines()
     } catch (e: Exception) {
         val scoreOutput = context.openFileOutput("settings.txt", Context.MODE_PRIVATE)
-        scoreOutput.write("100\n100\ntrue\ntrue\n".toByteArray())
+        scoreOutput.write("1\n1\ntrue\ntrue\n".toByteArray())
         listOf("100", "100", "true", "true")
     }
 }
