@@ -1837,8 +1837,8 @@ fun readsettings(context: Context): List<String> {
         fileInput.bufferedReader().readLines()
     } catch (e: Exception) {
         val scoreOutput = context.openFileOutput("settings.txt", Context.MODE_PRIVATE)
-        scoreOutput.write("1\n1\ntrue\ntrue\n".toByteArray())
-        listOf("100", "100", "true", "true")
+        scoreOutput.write("100\n100\ntrue\ntrue\n".toByteArray())
+        listOf("1", "1", "true", "true")
     }
 }
 fun readusers(context: Context): List<String> {
