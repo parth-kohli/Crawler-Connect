@@ -8,6 +8,10 @@ object Soundplayer {
         mediaPlayer = MediaPlayer.create(context, R.raw.shoot)
         mediaPlayer?.start()
     }
+    fun explode(context: Context) {
+        mediaPlayer = MediaPlayer.create(context, R.raw.fireball)
+        mediaPlayer?.start()
+    }
 
 
 }
