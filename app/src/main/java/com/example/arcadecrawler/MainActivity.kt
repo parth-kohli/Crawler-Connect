@@ -1163,43 +1163,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
                                 }
                             }
-                            /*Spacer(Modifier.height(tileHeight))
-
-                            Text("Powerups Animations: ", fontWeight = FontWeight.Bold)
-
-                            Spacer(Modifier.height(tileHeight))
-                            IconButton(onClick = {
-                                animenabled = !animenabled; editsettings(context = context, 3, volume)
-                            }, modifier = Modifier.width(6*tileWidth).height(2 * tileHeight).clip(RoundedCornerShape(tileHeight)).background(if (animenabled) Color.Green else Color.Red)) {
-                                if (animenabled) {
-                                    Row (modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End){
-                                        Text("On", color = Color.Black)
-                                        Spacer(modifier=Modifier.fillMaxHeight().width(tileWidth))
-                                        Icon(
-                                            painter = painterResource(R.drawable.circle),
-                                            contentDescription = "Check",
-                                            modifier=Modifier.width(tileWidth*2),
-                                            tint = Color(20,102,0)
-                                        )
-                                    }
-                                }
-                                else {
-                                    Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(
-                                            painter = painterResource(R.drawable.circle),
-                                            contentDescription = "Check",
-                                            modifier=Modifier.width(tileWidth*2),
-                                            tint = Color(102,0,2)
-
-                                        )
-                                        Spacer(modifier=Modifier.fillMaxHeight().width(tileWidth))
-                                        Text("Off", color = Color.Black)
-                                    }
-                                }
-                                    }*/
-
-
-
 
                         }
 
@@ -1289,6 +1252,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                 IconButton(
                                     onClick = {
                                         shield.value=false
+                                        done=false
                                         rapidfire.value=false
                                         multi.value=false
                                         mushbomb.value=false
@@ -1346,49 +1310,51 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 
 
-        }
-    }
-    if (loading){
-        Box(modifier=Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center){
-            Column(modifier=Modifier.height(25.85f*10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                val transition = rememberInfiniteTransition()
-                val hueShift by transition.animateFloat(
-                    initialValue = 0f,
-                    targetValue = 360f,
-                    animationSpec = infiniteRepeatable(
-                        animation = tween(durationMillis = 3000, easing = LinearEasing)
+
+        if (loading){
+            Box(modifier=Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center){
+                Column(modifier=Modifier.height(tileHeight*10), horizontalAlignment = Alignment.CenterHorizontally) {
+                    val transition = rememberInfiniteTransition()
+                    val hueShift by transition.animateFloat(
+                        initialValue = 0f,
+                        targetValue = 360f,
+                        animationSpec = infiniteRepeatable(
+                            animation = tween(durationMillis = 3000, easing = LinearEasing)
+                        )
                     )
-                )
-                val hue = (hueShift + 2 * (360f / 16)) % 360f
-                val color = Color.hsv(hue, 0.9f, 1f)
-                Text(
-                    text = "ARCADE CRAWLER",
+                    val hue = (hueShift + 2 * (360f / 16)) % 360f
+                    val color = Color.hsv(hue, 0.9f, 1f)
+                    Text(
+                        text = "ARCADE CRAWLER",
 
-                    fontWeight = FontWeight.Bold,
-                    color = color,
-                    fontSize = 40.sp
-                )
-                AnimatedCaterpillarPreview(25.85f.dp, 25.85f.dp)
+                        fontWeight = FontWeight.Bold,
+                        color = color,
+                        fontSize = 40.sp
+                    )
+                    AnimatedCaterpillarPreview(tileWidth, tileHeight)
 
-                Spacer(modifier = Modifier.height(25.85f.dp * 3))
-                Text(
-                    text = if (internet) "Waiting to load assets" else "Please turn on the internet",
-                    color = Color.Red,
-                    fontSize = 15.sp
-                )
-                Spacer(modifier = Modifier.height(25.85f.dp ))
-                snake_Loader(
-                    modifier = Modifier.fillMaxSize(),
-                    segmentCount = 16,
-                    pathSize = 100.dp,
-                    speed = 1.5f
-                )
+                    Spacer(modifier = Modifier.height(tileHeight * 3))
+                    Text(
+                        text = if (internet) "Waiting to load assets" else "Please turn on the internet",
+                        color = Color.Red,
+                        fontSize = 15.sp
+                    )
+                    Spacer(modifier = Modifier.height(tileHeight))
+                    snake_Loader(
+                        modifier = Modifier.fillMaxSize(),
+                        segmentCount = 16,
+                        pathSize = 100.dp,
+                        speed = 1.5f
+                    )
+
+                }
+
 
             }
-
-
         }
+            }
     }
+
 }
 @Composable
 fun snake_Loader(
