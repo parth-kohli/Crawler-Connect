@@ -1085,7 +1085,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
                         }
                         Column(
-                            modifier = Modifier.fillMaxSize(0.5f),
+                            modifier = Modifier.fillMaxSize(0.7f),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
@@ -1103,6 +1103,39 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                 tileWidth,
                                 tileHeight
                             )
+                            Text("Powerups Animations: ", fontWeight = FontWeight.Bold)
+
+                            Spacer(Modifier.height(tileHeight))
+                            IconButton(onClick = {
+                                animenabled = !animenabled; editsettings(context = context, 3, volume)
+                            }, modifier = Modifier.width(6*tileWidth).height(2 * tileHeight).clip(RoundedCornerShape(tileHeight)).background(if (animenabled) Color.Green else Color.Red)) {
+                                if (animenabled) {
+                                    Row (modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End){
+                                        Text("On", color = Color.Black)
+                                        Spacer(modifier=Modifier.fillMaxHeight().width(tileWidth))
+                                        Icon(
+                                            painter = painterResource(R.drawable.circle),
+                                            contentDescription = "Check",
+                                            modifier=Modifier.width(tileWidth*2),
+                                            tint = Color(20,102,0)
+                                        )
+                                    }
+                                }
+                                else {
+                                    Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.circle),
+                                            contentDescription = "Check",
+                                            modifier=Modifier.width(tileWidth*2),
+                                            tint = Color(102,0,2)
+
+                                        )
+                                        Spacer(modifier=Modifier.fillMaxHeight().width(tileWidth))
+                                        Text("Off", color = Color.Black)
+                                    }
+                                }
+                            }
+                            Spacer(Modifier.height(tileHeight))
                             IconButton(onClick = {
                                 usegyro = !usegyro; editsettings(context = context, 2, volume)
                             }, modifier = Modifier.fillMaxWidth().height(2 * tileHeight)) {
@@ -1130,7 +1163,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
                                 }
                             }
-                            Spacer(Modifier.height(tileHeight))
+                            /*Spacer(Modifier.height(tileHeight))
 
                             Text("Powerups Animations: ", fontWeight = FontWeight.Bold)
 
@@ -1163,7 +1196,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                         Text("Off", color = Color.Black)
                                     }
                                 }
-                                    }
+                                    }*/
 
 
 
